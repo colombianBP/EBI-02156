@@ -32,40 +32,40 @@ for i in [1,2,6]:
     plt.xlabel(datw.columns[i].capitalize())
     plt.ylabel('Normaliced frequency')
     plt.title('Frequency of '+datw.columns[i]+' in red and white wine')
-    plt.savefig('Plots/EDA/FrequencyHist'+datw.columns[i].title().replace(' ','')+'.jpg',bbox_inches='tight',dpi=200)
+    plt.savefig('Plots/EDA/FrequencyHist'+datw.columns[i].title().replace(' ','')+'.pdf',bbox_inches='tight',dpi=200)
     plt.clf()
 
 # make and save a correlation matrix and its plot; first for both
 corr_matrix = data.drop(['quality'],axis=1).corr()
 corr_matrix = corr_matrix.where(np.tril(np.ones(corr_matrix.shape),-1).astype(bool))
-corr_matrix = corr_matrix.iloc[1:,:-1]
+corr_matrix = corr_matrix.iloc[1:,:-1].round(2)
 corr_matrix.to_csv('Plots/Correlation/CorrelationMatrixBoth.csv')
-plt.figure(figsize = (10,10))
+plt.figure(figsize = (7,6.8))
 plt.title('Correlation matrix for Both wine types')
 sn.heatmap(corr_matrix, annot=True)
-plt.savefig('Plots/Correlation/CorrelationMatrixBoth.jpg',bbox_inches='tight',dpi=120)
+plt.savefig('Plots/Correlation/CorrelationMatrixBoth.pdf',bbox_inches='tight',dpi=120)
 plt.clf()
 
 #Now red wine
 corr_matrixr = datr.drop(['quality'],axis=1).corr()
 corr_matrixr = corr_matrixr.where(np.tril(np.ones(corr_matrixr.shape),-1).astype(bool))
-corr_matrixr = corr_matrixr.iloc[1:,:-1]
+corr_matrixr = corr_matrixr.iloc[1:,:-1].round(2)
 corr_matrixr.to_csv('Plots/Correlation/CorrelationMatrixRed.csv')
-plt.figure(figsize = (10,10))
+plt.figure(figsize = (7,6.8))
 plt.title('Correlation matrix for red wine')
 sn.heatmap(corr_matrixr, annot=True)
-plt.savefig('Plots/Correlation/CorrelationMatrixRed.jpg',bbox_inches='tight',dpi=120)
+plt.savefig('Plots/Correlation/CorrelationMatrixRed.pdf',bbox_inches='tight',dpi=120)
 plt.clf()
 
 #and white wine
 corr_matrixw = datw.drop(['quality'],axis=1).corr()
 corr_matrixw = corr_matrixw.where(np.tril(np.ones(corr_matrixw.shape),-1).astype(bool))
-corr_matrixw = corr_matrixw.iloc[1:,:-1]
+corr_matrixw = corr_matrixw.iloc[1:,:-1].round(2)
 corr_matrixw.to_csv('Plots/Correlation/CorrelationMatrixWhite.csv')
-plt.figure(figsize = (10,10))
+plt.figure(figsize = (7,6.8))
 plt.title('Correlation matrix for white wine')
 sn.heatmap(corr_matrixw, annot=True)
-plt.savefig('Plots/Correlation/CorrelationMatrixWhite.jpg',bbox_inches='tight',dpi=120)
+plt.savefig('Plots/Correlation/CorrelationMatrixWhite.pdf',bbox_inches='tight',dpi=120)
 plt.clf()
 
 #Compare white and red matices
@@ -79,7 +79,7 @@ comp_matrix.to_csv('Plots/Correlation/CorrelationMatrixComparison.csv')
 plt.suptitle('Comparison of correlation matrices for white VS red wine')
 plt.title('As the absolute value of the difference')
 sn.heatmap(comp_matrix, annot=True)
-plt.savefig('Plots/Correlation/CorrelationMatrixComparison.jpg',bbox_inches='tight',dpi=120)
+plt.savefig('Plots/Correlation/CorrelationMatrixComparison.pdf',bbox_inches='tight',dpi=120)
 plt.clf()
 
 # Write variance unflation factors to evaluate feature engeniering results
@@ -94,15 +94,15 @@ data=data.reset_index(drop=True)
 
 #VIF analysis without feature engeniering
 vifs=[variance_inflation_factor(data.drop(['quality'],axis=1).values, i) for i in range(len(data.drop(['quality'],axis=1).columns))]
-pd.DataFrame({'Columns':data.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/RedAndWhiteWine.csv')
+pd.DataFrame({'Columns':data.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/RedAndWhiteWine.csv',index=False)
 
 datr=data[data.color>0].reset_index(drop=True).drop(['color'],axis=1)
 vifs=[variance_inflation_factor(datr.drop(['quality'],axis=1).values, i) for i in range(len(datr.drop(['quality'],axis=1).columns))]
-pd.DataFrame({'Columns':datr.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/redWine.csv')
+pd.DataFrame({'Columns':datr.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/redWine.csv',index=False)
 
 datw=data[data.color<0].reset_index(drop=True).drop(['color'],axis=1)
 vifs=[variance_inflation_factor(datw.drop(['quality'],axis=1).values, i) for i in range(len(datw.drop(['quality'],axis=1).columns))]
-pd.DataFrame({'Columns':datw.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/whiteWine.csv')
+pd.DataFrame({'Columns':datw.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/whiteWine.csv',index=False)
 
 #Feature engineering 
 drops=['density','residual sugar','alcohol']
@@ -115,15 +115,15 @@ data=data.drop(drops,axis=1)
 
 #VIF analysis with feature engeniering
 vifs=[variance_inflation_factor(data.drop(['quality'],axis=1).values, i) for i in range(len(data.drop(['quality'],axis=1).columns))]
-pd.DataFrame({'Columns':data.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/TransformedRedAndWhiteWine.csv')
+pd.DataFrame({'Columns':data.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/TransformedRedAndWhiteWine.csv',index=False)
 
 datr=data[data.color>0].reset_index(drop=True).drop(['color'],axis=1)
 vifs=[variance_inflation_factor(datr.drop(['quality'],axis=1).values, i) for i in range(len(datr.drop(['quality'],axis=1).columns))]
-pd.DataFrame({'Columns':datr.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/TransformedRedWine.csv')
+pd.DataFrame({'Columns':datr.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/TransformedRedWine.csv',index=False)
 
 datw=data[data.color<0].reset_index(drop=True).drop(['color'],axis=1)
 vifs=[variance_inflation_factor(datw.drop(['quality'],axis=1).values, i) for i in range(len(datw.drop(['quality'],axis=1).columns))]
-pd.DataFrame({'Columns':datw.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/TransformedWhiteWine.csv')
+pd.DataFrame({'Columns':datw.drop(['quality'],axis=1).columns,'VIF':vifs}).to_csv('Plots/VarianceInflation/TransformedWhiteWine.csv',index=False)
 
 #Model construction, training and statistics
 modelb = sm.OLS(data.quality,np.array(data.drop(['quality'],axis=1)))

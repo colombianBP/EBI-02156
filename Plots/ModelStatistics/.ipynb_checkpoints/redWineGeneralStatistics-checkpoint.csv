@@ -1,6 +1,6 @@
 Model:,OLS,Adj. R-squared (uncentered):,0.324
 Dependent Variable:,y,AIC:,3748.3420
-Date:,2023-10-06 19:18,BIC:,3791.3591
+Date:,2023-10-06 17:15,BIC:,3791.3591
 No. Observations:,1599,Log-Likelihood:,-1866.2
 Df Model:,8,F-statistic:,96.76
 Df Residuals:,1591,Prob (F-statistic):,3.25e-131
